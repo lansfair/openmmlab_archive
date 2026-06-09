@@ -1,0 +1,14 @@
+# 模型权重文件
+*.pth
+*.bin
+*.ckpt
+*.safetensors
+
+# 缓存、日志、输出
+work_dirs/
+rs_infer_save/
+out/
+checkpoints/
+__pycache__/
+*.log
+*.tif
