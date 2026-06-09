@@ -4,11 +4,41 @@
 *.ckpt
 *.safetensors
 
-# 缓存、日志、输出
+# 遥感/可视化图像
+*.tif
+*.tiff
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.gif
+
+# 压缩包
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# 表格数据
+*.csv
+*.xlsx
+*.xls
+*.parquet
+
+# 训练&推理输出目录
 work_dirs/
 rs_infer_save/
 out/
 checkpoints/
+vis/
+visualization/
+
+# 缓存、日志、编译产物
 __pycache__/
+*.pyc
 *.log
-*.tif
+*.txt
+*.swp
+.DS_Store
