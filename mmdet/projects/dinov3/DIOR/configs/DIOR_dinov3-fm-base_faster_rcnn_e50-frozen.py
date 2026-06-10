@@ -128,7 +128,7 @@ model = dict(
         type="DetDataPreprocessor",
         mean=[123.675, 116.280,103.530],
         std=[58.395, 57.120, 57.375],
-        bgr_to_rgb=False,
+        bgr_to_rgb=True,
         pad_size_divisor=32,
     ),
     backbone=dict(

@@ -13,13 +13,14 @@ data_root = '/mnt/ht2-nas2/EO_test/cyz/Copernicus-FM/copernicus/dataset/dfc2020_
 
 dinov3_repo_dir = "projects/dinov3/LoveDA/dinov3-main"
 dinov3_weights_path =  "/mnt/ht2-nas2/EO_test/openmmlab-archive/src/v1/mmseg/pretrained/dinov3_vitl16_pretrain_sat493m-eadcf0ff.pth"
-work_dir = "./work_dirs/dinov3-vitl16_4xb16_dfc2020_lp"
+work_dir = "./work_dirs/dinov3-vitl16_4xb16_dfc2020_uper"
 
 ignore_index = 255
 num_classes = 8
 crop_size = 256
 patch_size = 16
 hidden_dim = 1024
+
 norm_cfg = dict(type="SyncBN", requires_grad=True)
 
 train_pipeline = [
@@ -128,25 +129,51 @@ model = dict(
         out_channels=hidden_dim,
         freeze=True,
     ),
+    neck=dict(
+        type="MultiLevelNeck",
+        in_channels=[hidden_dim],
+        out_channels=hidden_dim,
+        scales=[4, 2, 1, 0.5],
+        norm_cfg=norm_cfg,
+    ),
     decode_head=dict(
-        type="OlmoEarthPatchLinearHead",
-        in_channels=hidden_dim,
-        channels=hidden_dim,
-        in_index=0,
+        type="UPerHead",
+        in_channels=[hidden_dim, hidden_dim, hidden_dim, hidden_dim],
+        in_index=[0, 1, 2, 3],
+        pool_scales=(1, 2, 3, 6),
+        channels=512,
+        dropout_ratio=0.1,
         num_classes=num_classes,
-        patch_size=patch_size,
         ignore_index=ignore_index,
-        use_valid_mask=False,
-        valid_mask_loss=False,
-        align_corners=True,
+        norm_cfg=norm_cfg,
+        align_corners=False,
         loss_decode=dict(
             type="CrossEntropyLoss",
             use_sigmoid=False,
             loss_weight=1.0,
         ),
     ),
+    auxiliary_head=dict(
+        type="FCNHead",
+        in_channels=hidden_dim,
+        in_index=2,
+        channels=256,
+        num_convs=1,
+        concat_input=False,
+        dropout_ratio=0.1,
+        num_classes=num_classes,
+        ignore_index=ignore_index,
+        norm_cfg=norm_cfg,
+        align_corners=False,
+        loss_decode=dict(
+            type="CrossEntropyLoss",
+            use_sigmoid=False,
+            loss_weight=0.4,
+        ),
+    ),
     train_cfg=dict(),
-    test_cfg=dict(mode="whole")
+    test_cfg=dict(mode="whole"),
+
 )
 
 optim_wrapper = dict(

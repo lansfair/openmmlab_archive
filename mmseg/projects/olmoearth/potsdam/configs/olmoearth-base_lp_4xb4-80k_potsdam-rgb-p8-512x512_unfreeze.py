@@ -16,11 +16,12 @@ num_timesteps = 1
 crop_size = 512
 patch_size = 8
 hidden_dim = 768
-norm_cfg = dict(type="SyncBN", requires_grad=True)
 
 train_pipeline = [
     dict(type="LoadImageFromFile"),
     dict(type="LoadAnnotations"),
+    # dict(type='LoadSinglePNGImageFromFile'),
+    # dict(type='LoadLocalPtsdamAnnotations'),
     dict(
         type="RandomResize",
         scale=(crop_size, crop_size),
@@ -45,8 +46,10 @@ train_pipeline = [
 
 test_pipeline = [
     dict(type="LoadImageFromFile"),
-    dict(type="Resize", scale=(crop_size, crop_size), keep_ratio=True),
+    # dict(type='LoadSinglePNGImageFromFile'),
+    # dict(type="Resize", scale=(crop_size, crop_size), keep_ratio=True),
     dict(type="LoadAnnotations"),
+    # dict(type='LoadLocalPtsdamAnnotations'),
     dict(
         type="RGBToOlmoEarthS2",
         num_timesteps=num_timesteps,
@@ -71,6 +74,15 @@ train_dataloader = dict(
         label_mapping="official_to_rvsa_class5_ignore5",
         pipeline=train_pipeline,
     ),
+    # dataset=dict(
+    #     type='LocalPotsdamDataset',
+    #     data_root=data_root,
+    #     data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir'),
+    #     ann_file='train.txt',
+    #     ignore_index=5,
+    #     reduce_zero_label=False,
+    #     pipeline=train_pipeline,
+    # ),
 )
 
 val_dataloader = dict(
@@ -88,6 +100,15 @@ val_dataloader = dict(
         label_mapping="official_to_rvsa_class5_ignore5",
         pipeline=test_pipeline,
     ),
+    # dataset=dict(
+    #     type='LocalPotsdamDataset',
+    #     data_root=data_root,
+    #     data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir'),
+    #     ann_file='valid.txt',
+    #     ignore_index=5,
+    #     reduce_zero_label=False,
+    #     pipeline=test_pipeline,
+    # ),
 )
 test_dataloader = val_dataloader
 

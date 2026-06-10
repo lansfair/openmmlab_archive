@@ -129,7 +129,7 @@ class PackDinoSegInputs(BaseTransform):
             # ====================== 在这里修改 ======================
             # 只抽取 BGR 三个通道（你指定的通道：2=蓝,3=绿,4=红）
             # numpy 索引 [:, :, [蓝,绿,红]]
-            img = img[:, :, [2, 3, 4]]  # 抽 3 个通道，变成 (H, W, 3)
+            img = img[:, :, [1, 2, 3]]  # 抽 3 个通道，变成 (H, W, 3)
 
             if len(img.shape) < 3:
                 img = np.expand_dims(img, -1)

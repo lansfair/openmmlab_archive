@@ -13,12 +13,12 @@ data_root = '/mnt/ht2-nas2/EO_test/cyz/Copernicus-FM/copernicus/dataset/dfc2020_
 
 dinov3_repo_dir = "projects/dinov3/LoveDA/dinov3-main"
 dinov3_weights_path =  "/mnt/ht2-nas2/EO_test/openmmlab-archive/src/v1/mmseg/pretrained/dinov3_vitl16_pretrain_sat493m-eadcf0ff.pth"
-work_dir = "./work_dirs/dinov3-vitl16_4xb16_dfc2020_lp"
+work_dir = "./work_dirs/dinov3-vitl16_4xb8_dfc2020_lp"
 
 ignore_index = 255
 num_classes = 8
 crop_size = 256
-patch_size = 16
+patch_size = 8
 hidden_dim = 1024
 norm_cfg = dict(type="SyncBN", requires_grad=True)
 

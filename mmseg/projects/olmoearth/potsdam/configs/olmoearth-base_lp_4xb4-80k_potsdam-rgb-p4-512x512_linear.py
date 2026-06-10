@@ -4,7 +4,8 @@ custom_imports = dict(
     allow_failed_imports=False,
 )
 
-data_root = "/mnt/ht2-nas2/EO_test/mty/potsdam"
+# data_root = "/mnt/ht2-nas2/EO_test/mty/potsdam"
+data_root = "/mnt/ht2-nas2/EO_test/openmmlab-archive/dat/potsdam"
 olmoearth_model_dir = "/mnt/ht2-nas2/EO_test/model/OlmoEarth-v1-Base"
 model_config_path = f"{olmoearth_model_dir}/config.json"
 weights_path = f"{olmoearth_model_dir}/weights.pth"

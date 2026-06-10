@@ -5,13 +5,10 @@ custom_imports = dict(
 )
 
 data_root = "/mnt/ht2-nas2/EO_test/mty/potsdam"
+# data_root = "/mnt/ht2-nas2/EO_test/openmmlab-archive/dat/potsdam"
 olmoearth_model_dir = "/mnt/ht2-nas2/EO_test/model/OlmoEarth-v1-Base"
 model_config_path = f"{olmoearth_model_dir}/config.json"
 weights_path = f"{olmoearth_model_dir}/weights.pth"
-work_dir = (
-    "./work_dirs/"
-    "olmoearth-base_upernet_4xb4-80k_potsdam-rgb-rvsa-p4-512x512"
-)
 
 ignore_index = 5
 num_classes = 5
@@ -24,6 +21,8 @@ norm_cfg = dict(type="SyncBN", requires_grad=True)
 train_pipeline = [
     dict(type="LoadImageFromFile"),
     dict(type="LoadAnnotations"),
+    # dict(type='LoadSinglePNGImageFromFile'),
+    # dict(type='LoadLocalPtsdamAnnotations'),
     dict(
         type="RandomResize",
         scale=(crop_size, crop_size),
@@ -50,6 +49,8 @@ test_pipeline = [
     dict(type="LoadImageFromFile"),
     dict(type="Resize", scale=(crop_size, crop_size), keep_ratio=True),
     dict(type="LoadAnnotations"),
+    # dict(type='LoadSinglePNGImageFromFile'),
+    # dict(type='LoadLocalPtsdamAnnotations'),
     dict(
         type="RGBToOlmoEarthS2",
         num_timesteps=num_timesteps,
@@ -74,6 +75,15 @@ train_dataloader = dict(
         label_mapping="official_to_rvsa_class5_ignore5",
         pipeline=train_pipeline,
     ),
+    # dataset=dict(
+    #     type='LocalPotsdamDataset',
+    #     data_root=data_root,
+    #     data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir'),
+    #     ann_file='train.txt',
+    #     ignore_index=5,
+    #     reduce_zero_label=False,
+    #     pipeline=train_pipeline,
+    # ),
 )
 
 val_dataloader = dict(
@@ -91,6 +101,15 @@ val_dataloader = dict(
         label_mapping="official_to_rvsa_class5_ignore5",
         pipeline=test_pipeline,
     ),
+    # dataset=dict(
+    #     type='LocalPotsdamDataset',
+    #     data_root=data_root,
+    #     data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir'),
+    #     ann_file='valid.txt',
+    #     ignore_index=5,
+    #     reduce_zero_label=False,
+    #     pipeline=test_pipeline,
+    # ),
 )
 test_dataloader = val_dataloader
 
@@ -107,7 +126,7 @@ data_preprocessor = dict(
     type="OlmoEarthSegDataPreProcessor",
     mean=None,
     std=None,
-    bgr_to_rgb=False,
+    bgr_to_rgb=True,
     pad_val=0,
     seg_pad_val=ignore_index,
     size=(crop_size, crop_size),
