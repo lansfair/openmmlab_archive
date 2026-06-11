@@ -1,6 +1,12 @@
 
+import os
 dataset_type = 'LocalPotsdamDataset'
-data_root = '/mnt/ht2-nas2/EO_test/zhc/dataset/potsdam'
+
+data_root = os.path.join(
+    os.environ.get('MM_ARCHIVE_DATA_HOME'), 
+    'potsdam',
+)
+
 crop_size = (256, 256)
 patch_area = (16 * 10 / 1000)**2
 

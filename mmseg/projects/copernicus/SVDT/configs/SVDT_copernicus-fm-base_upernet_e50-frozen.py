@@ -1,3 +1,4 @@
+import os
 _base_ = [
     '../../../../configs/_base_/default_runtime.py',
     './SVDT.py'
@@ -11,7 +12,7 @@ crop_size = (256, 256)
 patch_area = (16 * 10 / 1000)**2
 
 
-copernicus_fm_checkpoint = "/mnt/ht2-nas2/EO_test/openmmlab-archive/src/v1/mmseg/pretrained/CopernicusFM_ViT_base_varlang_e100.pth"
+copernicus_fm_checkpoint = os.path.join(os.environ.get('MM_ARCHIVE_CKPT_HOME'), "CopernicusFM_ViT_base_varlang_e100.pth")
 s2_band_wavelengths = [
     665, 560, 490,
 ]
@@ -80,7 +81,7 @@ model = dict(
     test_cfg=dict(mode='whole'),
 )
 
-val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
+val_evaluator = dict(type='IoUMetric', iou_metrics=["mIoU", "mFscore"])
 test_evaluator = val_evaluator
 
 train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=50, val_interval=1)

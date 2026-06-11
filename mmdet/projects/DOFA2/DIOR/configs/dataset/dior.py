@@ -1,6 +1,8 @@
+import os
+
 DATASET_TYPE = 'DIORDataset'
 
-DATA_ROOT = '/mnt/ht2-nas2/EO_test/zyf/data/'
+DATA_ROOT = os.environ.get('MM_ARCHIVE_DATA_HOME')
 
 DATASET = 'DIOR'
 

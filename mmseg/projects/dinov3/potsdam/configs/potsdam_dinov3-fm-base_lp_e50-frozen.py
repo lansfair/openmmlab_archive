@@ -1,3 +1,4 @@
+import os
 _base_ = [
     '../../../../configs/_base_/default_runtime.py',
     './potsdam.py'
@@ -7,8 +8,8 @@ custom_imports = dict(
     imports=['projects.dinov3.potsdam.dinov3'],
     allow_failed_imports=False)
 
-dinov3_repo_dir = "projects/dinov3/potsdam/dinov3-main"
-dinov3_weights_path = "/mnt/ht2-nas2/EO_test/openmmlab-archive/src/v1/mmseg/pretrained/dinov3_vitl16_pretrain_sat493m-eadcf0ff.pth"
+dinov3_repo_dir = "projects/dinov3/m-cashew-plant/dinov3-main"
+dinov3_weights_path = os.path.join(os.environ.get('MM_ARCHIVE_CKPT_HOME'), 'dinov3_vitl16_pretrain_sat493m-eadcf0ff.pth')
 
 ignore_index = 255
 num_classes = 5
@@ -20,6 +21,7 @@ val_evaluator = dict(
     type="OlmoEarthIoUMetric",
     num_classes=num_classes,
     ignore_index=ignore_index,
+    iou_metrics=["mIoU", "mFscore"],
     use_valid_mask=False,
 )
 test_evaluator = val_evaluator

@@ -1,4 +1,5 @@
-data_root = '/mnt/qh2-nas3/data_verification/label20000/Segmentation'
+import os
+data_root = os.path.join(os.environ.get('MM_ARCHIVE_DATA_HOME'), 'SVDT')
 dataset_type = 'LocalSVDTDataset'
 
 ignore_index = 255

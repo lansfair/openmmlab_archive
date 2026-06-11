@@ -1,6 +1,6 @@
 _base_ = ['../../../../configs/_base_/default_runtime.py']
 custom_imports = dict(
-    imports=["projects.olmoearth.olmoearth"],
+    imports=["projects.olmoearth.potsdam.olmoearth"],
     allow_failed_imports=False,
 )
 

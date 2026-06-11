@@ -10,8 +10,7 @@ patch_size = 4
 hidden_dim = 768
 embedding_size = (128, 128)
 norm_cfg = dict(type="SyncBN", requires_grad=True)
-embedding_root = "/mnt/ht2-nas2/EO_test/zhc/mmsegmentation/output/olmoearth_embeddings1/potsdam"
-work_dir = "./work_dirs/olmoearth-base_1xb8-50e_crop-type-s2-offline-linear"
+embedding_root = "/mnt/ht2-nas2/EO_test/openmmlab-archive/embed/potsdam-embed"
 
 train_pipeline = [
     dict(type="LoadPotsdamOlmoEarthEmbedding", ignore_index=ignore_index),
@@ -68,7 +67,7 @@ val_evaluator = dict(
     type="OlmoEarthIoUMetric",
     num_classes=num_classes,
     ignore_index=ignore_index,
-    iou_metrics=["mIoU"],
+    iou_metrics=["mIoU", "mFscore"],
     use_valid_mask=False,
 )
 test_evaluator = val_evaluator

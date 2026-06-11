@@ -18,7 +18,7 @@ export CONDA_HOME="$HOME/miniconda3"
 export CONDA_ENV_NAME='openmm'
 
 # 指定训练使用的 GPU 索引，格式：0, 1, 2..., N。
-export CUDA_VISIBLE_DEVICES='5'
+export CUDA_VISIBLE_DEVICES='0'
 
 # 训练启动配置名称，权重文件要求相同命名。
 export CONFIG_NAME='olmoearth-base_1xb4-50e_m-cashew-plant-s2-ft_5e-4'
@@ -29,7 +29,8 @@ cd "$PWD/../../../"
 export PYTHONPATH=".":"$PYTHONPATH"
 PYINTERPRETER="$CONDA_HOME/envs/$CONDA_ENV_NAME/bin/python3"
 
-WORK_DIR="/tmp/work_dirs/mmseg/"$(basename $SRCDIR)""
+MM_WORK_HOME="$(echo "$MM_ARCHIVE_HOME" | cut -d '/' -f 1-4)"
+WORK_DIR="$MM_WORK_HOME/openmmlab_work_dirs/mmdet/"$(basename $SRCDIR)""
 mkdir -p "$WORK_DIR"
 
 $PYINTERPRETER "$PWD/tools/test.py" "$SRCDIR/configs/$CONFIG_NAME.py" "checkpoints/$CONFIG_NAME.pth" --work-dir "$WORK_DIR" --show-dir "$WORK_DIR"

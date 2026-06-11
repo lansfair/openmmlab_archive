@@ -29,7 +29,7 @@ cd "$PWD/../../../"
 export PYTHONPATH=".":"$PYTHONPATH"
 PYINTERPRETER="$CONDA_HOME/envs/$CONDA_ENV_NAME/bin/python3"
 
-WORK_DIR="/tmp/work_dirs/mmseg/"$(basename $SRCDIR)""
+WORK_DIR="/mnt/ht2-nas2/EO_test/zhc/mmsegmentation/work_dirs/"$(basename $SRCDIR)"/$CONFIG_NAME"
 mkdir -p "$WORK_DIR"
 
 $PYINTERPRETER "$PWD/tools/train.py" "$SRCDIR/configs/$CONFIG_NAME.py" --work-dir "$WORK_DIR"

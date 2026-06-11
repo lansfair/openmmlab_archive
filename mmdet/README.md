@@ -4,7 +4,8 @@
 
 |序号|数据集|骨干网络|任务指标|维护人| 项目 |
 | -- | -- | -- | -- | -- | -- |
-| 1 | m-cashew-plant  | copernicus  | LP(冻结): mIoU 25.76% </br> LP(非冻结): mIoU 75.20%  | 郑谊峰 | [m-cashew-plant](./projects/copernicus/m-cashew-plant)|
+| 1 | DIOR  | DOFA2  | Faster-RCNN: mAP 0.7269  | 郑谊峰 | [m-cashew-plant](./projects/DOFA2/DIOR)|
+| 1 | DIOR  | olmoearth  | Faster-RCNN: mAP 0.5346  | 郑谊峰 | [m-cashew-plant](./projects/olmoearth/DIOR)|
 
 ## 目录
 

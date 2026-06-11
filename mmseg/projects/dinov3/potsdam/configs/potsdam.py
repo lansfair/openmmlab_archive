@@ -1,4 +1,6 @@
-data_root = '/mnt/ht2-nas2/EO_test/openmmlab-archive/dat/potsdam'
+import os
+
+data_root = os.path.join(os.environ.get('MM_ARCHIVE_DATA_HOME'), 'potsdam')
 dataset_type = 'LocalPotsdamDataset'
 
 ignore_index = 255

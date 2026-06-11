@@ -1,6 +1,10 @@
 
+import os
 dataset_type = 'LocalSVDTDataset'
-data_root = '/mnt/qh2-nas3/data_verification/label20000/Segmentation'
+data_root = os.path.join(
+    os.environ.get('MM_ARCHIVE_DATA_HOME'), 
+    'SVDT',
+)
 crop_size = (256, 256)
 patch_area = (16 * 10 / 1000)**2
 

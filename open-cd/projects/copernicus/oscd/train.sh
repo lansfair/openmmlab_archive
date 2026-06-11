@@ -13,7 +13,8 @@ cd "$PWD/../../../"
 export PYTHONPATH=".":"$PYTHONPATH"
 PYINTERPRETER="$CONDA_HOME/envs/$CONDA_ENV_NAME/bin/python3"
 
-WORK_DIR="/tmp/work_dirs/$DATASET"
+MM_WORK_HOME="$(echo "$SRCDIR" | cut -d '/' -f 1-4)"
+WORK_DIR="$MM_WORK_HOME/openmmlab_work_dirs/mmdet/"$(basename $SRCDIR)""
 mkdir -p "$WORK_DIR"
 
 $PYINTERPRETER "$PWD/tools/train.py" "$SRCDIR/configs/$CONFIG_NAME.py" --work-dir "$WORK_DIR"

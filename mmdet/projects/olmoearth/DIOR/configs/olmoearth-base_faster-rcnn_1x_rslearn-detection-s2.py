@@ -1,13 +1,13 @@
 custom_imports = dict(
-    imports=["projects.olmoearth.olmoearth"],
+    imports=["projects.olmoearth.DIOR.olmoearth"],
     allow_failed_imports=False,
 )
 
-data_root = "data/rslearn_detection_manifest"
-olmoearth_model_dir = "checkpoints/olmoearth"
+mm_archive_home = '/mnt/ht2-nas2/EO_test/openmmlab-archive'
+data_root = f"{mm_archive_home}/dat/DIOR"
+olmoearth_model_dir = f"{mm_archive_home}/pretrained/OlmoEarth-v1-Base"
 model_config_path = f"{olmoearth_model_dir}/config.json"
 weights_path = f"{olmoearth_model_dir}/weights.pth"
-work_dir = "./work_dirs/olmoearth-base_faster-rcnn_rslearn-detection-s2"
 
 classes = ("object",)
 num_classes = len(classes)

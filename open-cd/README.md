@@ -4,7 +4,8 @@
 
 |序号|数据集|骨干网络|任务指标|维护人| 项目 |
 | -- | -- | -- | -- | -- | -- |
-| 1 | oscd            | copernicus  | upernet： mIou 64.77%                               | 王若宇 |  [oscd](../open-cd/projects/copernicus/oscd)
+| 1 | oscd            | copernicus  | upernet： mIou 64.77%                               | 王若宇 |  [源码](./projects/copernicus/oscd)
+| 1 | LEVIR-CD            | dinov3  | upernet： mIou 88.37%，F1 93.49                            | 郑谊峰 |  [源码](./projects/dinov3/LevirCD)
 
 
 ## 目录

@@ -1,5 +1,5 @@
 custom_imports = dict(
-    imports=["projects.olmoearth.olmoearth"],
+    imports=["projects.olmoearth.DIOR.olmoearth"],
     allow_failed_imports=False,
 )
 

@@ -1,10 +1,12 @@
+import os
+
 _base_ = [
-    '../../../configs/_base_/models/faster-rcnn_r50_fpn.py',
-    '../../../configs/_base_/default_runtime.py',
+    '../../../../configs/_base_/models/faster-rcnn_r50_fpn.py',
+    '../../../../configs/_base_/default_runtime.py',
     './dataset/dior.py'
 ]
 
-custom_imports = dict(imports=['projects.DOFA2.dofa2'])
+custom_imports = dict(imports=['projects.DOFA2.DIOR.dofa2'])
 
 DATA_SIZE = 800
 
@@ -31,6 +33,8 @@ NUM_CLASSES = 20
 
 TRAIN_EPOCH = 15
 
+CHECKPOINT = os.path.join(os.environ.get('MM_ARCHIVE_CKPT_HOME'), 'dofav2_vit_large_e150.pth')
+
 
 model = dict(
     data_preprocessor=dict(
@@ -50,7 +54,7 @@ model = dict(
         convert_patch_14_to_16=True,
         drop_path_rate=0.1,
         frozen_stages=False,
-        init_cfg=dict(type='Pretrained', checkpoint='projects/DOFA2/pretrained/dofav2_vit_large_e150.pth')
+        init_cfg=dict(type='Pretrained', checkpoint=CHECKPOINT)
     ),
     neck=dict(
         _delete_=True,
