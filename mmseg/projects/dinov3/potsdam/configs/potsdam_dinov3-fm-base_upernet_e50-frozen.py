@@ -1,4 +1,5 @@
 import os
+
 _base_ = [
     '../../../../configs/_base_/default_runtime.py',
     './potsdam.py'
@@ -8,24 +9,16 @@ custom_imports = dict(
     imports=['projects.dinov3.potsdam.dinov3'],
     allow_failed_imports=False)
 
-dinov3_repo_dir = "projects/dinov3/m-cashew-plant/dinov3-main"
+dinov3_repo_dir = "projects/dinov3/potsdam/dinov3-main"
 dinov3_weights_path = os.path.join(os.environ.get('MM_ARCHIVE_CKPT_HOME'), 'dinov3_vitl16_pretrain_sat493m-eadcf0ff.pth')
 
-ignore_index = 255
+ignore_index = 5
 num_classes = 5
 crop_size = 256
 patch_size = 16
 hidden_dim = 1024
 
 norm_cfg = dict(type='SyncBN', requires_grad=True)
-val_evaluator = dict(
-    type="OlmoEarthIoUMetric",
-    num_classes=num_classes,
-    ignore_index=ignore_index,
-    iou_metrics=["mIoU", "mFscore"],
-    use_valid_mask=False,
-)
-test_evaluator = val_evaluator
 
 data_preprocessor = dict(
     type="SegDataPreProcessor",
@@ -65,6 +58,7 @@ model = dict(
         channels=512,
         dropout_ratio=0.1,
         num_classes=num_classes,
+        ignore_index=ignore_index,
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
@@ -80,6 +74,7 @@ model = dict(
         concat_input=False,
         dropout_ratio=0.1,
         num_classes=num_classes,
+        ignore_index=ignore_index,
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
@@ -114,6 +109,14 @@ param_scheduler = [
         by_epoch=True,
     ),
 ]
+
+val_evaluator = dict(
+    type="IoUMetric",
+    num_classes=num_classes,
+    ignore_index=ignore_index,
+    use_valid_mask=False,
+)
+test_evaluator = val_evaluator
 
 train_cfg = dict(type="EpochBasedTrainLoop", max_epochs=50, val_interval=1)
 val_cfg = dict(type="ValLoop")

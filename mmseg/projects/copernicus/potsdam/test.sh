@@ -15,13 +15,13 @@ export MM_ARCHIVE_CKPT_HOME="$MM_ARCHIVE_HOME/pretrained"
 export CONDA_HOME="$HOME/miniconda3"
 
 # Miniconda3 虚拟环境名称，确保此环境可以正常运行你的项目。
-export CONDA_ENV_NAME='mmdofa2'
+export CONDA_ENV_NAME='mmdinov3-cd'
 
 # 指定训练使用的 GPU 索引，格式：0, 1, 2..., N。
 export CUDA_VISIBLE_DEVICES='5'
 
 # 训练启动配置名称，权重文件要求相同命名。
-export CONFIG_NAME='cashew-plant_copernicus-fm-base_lp_wft_lr-5e-4_e50'
+export CONFIG_NAME='potsdam_copernicus-fm-base_upernet_e50-frozen_lr1e3'
 
 
 SRCDIR=$PWD
@@ -32,4 +32,4 @@ PYINTERPRETER="$CONDA_HOME/envs/$CONDA_ENV_NAME/bin/python3"
 WORK_DIR="/mnt/ht2-nas2/EO_test/zhc/mmsegmentation/work_dirs/"$(basename $SRCDIR)"/$CONFIG_NAME"
 mkdir -p "$WORK_DIR"
 
-$PYINTERPRETER "$PWD/tools/test.py" "$SRCDIR/configs/$CONFIG_NAME.py" "$SRCDIR/checkpoints/$CONFIG_NAME.pth" --work-dir "$WORK_DIR" --show-dir "$WORK_DIR"
+$PYINTERPRETER "$PWD/tools/test.py" "$SRCDIR/configs/$CONFIG_NAME.py" "$SRCDIR/checkpoints/$CONFIG_NAME.pth" --work-dir "$WORK_DIR" 

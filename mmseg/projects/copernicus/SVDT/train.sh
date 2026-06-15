@@ -15,13 +15,13 @@ export MM_ARCHIVE_CKPT_HOME="$MM_ARCHIVE_HOME/src/v1/mmseg/pretrained"
 export CONDA_HOME="$HOME/miniconda3"
 
 # Miniconda3 虚拟环境名称，确保此环境可以正常运行你的项目。
-export CONDA_ENV_NAME='mmdofa2'
+export CONDA_ENV_NAME='mmdinov3-cd'
 
 # 指定训练使用的 GPU 索引，格式：0, 1, 2..., N。
-export CUDA_VISIBLE_DEVICES='5'
+export CUDA_VISIBLE_DEVICES='1'
                               
 # 训练启动配置名称。
-export CONFIG_NAME='potsdam_copernicus-fm-base_lp_e50-frozen'
+export CONFIG_NAME='SVDT_copernicus-fm-base_upernet_e50-frozen_lr1e2'
 
 
 SRCDIR=$PWD

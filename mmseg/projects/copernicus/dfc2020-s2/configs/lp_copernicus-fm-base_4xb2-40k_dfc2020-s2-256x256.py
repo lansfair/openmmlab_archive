@@ -27,7 +27,7 @@ palette = [
 visualizer = dict(classes=classes, palette=palette)
 
 dataset_type = 'DFC2020S2Dataset'
-data_root = '/mnt/ht2-nas2/EO_test/cyz/Copernicus-FM/mmsegmentation/projects/copernicus/dataset/dfc2020_s1s2/'
+data_root = '/mnt/ht2-nas2/EO_test/openmmlab-archive/dat/dfc2020_s1s2'
 crop_size = (256, 256)
 patch_area = (16 * 10 / 1000)**2
 # copernicus_fm_checkpoint = (
@@ -35,7 +35,7 @@ patch_area = (16 * 10 / 1000)**2
 #     'CopernicusFM_ViT_base_varlang_e100.pth')
 
 
-copernicus_fm_checkpoint = "/mnt/ht2-nas2/EO_test/cyz/Copernicus-FM/weights/CopernicusFM_ViT_base_varlang_e100.pth"
+copernicus_fm_checkpoint = "/mnt/ht2-nas2/EO_test/wyf/Zhejiang_Earth_weights/checkpoint-999.pth"
 s2_band_wavelengths = [
     440, 490, 560, 665, 705, 740, 783, 842, 860, 940, 1370, 1610, 2190
 ]
@@ -213,9 +213,10 @@ default_hooks = dict(
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(type='CheckpointHook', by_epoch=True, interval=1),
     sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(
-        type='CopernicusSegVisualizationHook',
-        # draw=True,
-        interval=1,
-        rgb_band_indices=(3, 2, 1)))
+    # visualization=dict(
+    #     type='CopernicusSegVisualizationHook',
+    #     # draw=True,
+    #     interval=1,
+    #     rgb_band_indices=(3, 2, 1))
+    )
 

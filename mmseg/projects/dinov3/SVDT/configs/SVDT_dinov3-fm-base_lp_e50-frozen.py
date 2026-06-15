@@ -8,7 +8,7 @@ custom_imports = dict(
     imports=['projects.dinov3.SVDT.dinov3'],
     allow_failed_imports=False)
 
-dinov3_repo_dir = "projects/dinov3/m-cashew-plant/dinov3-main"
+dinov3_repo_dir = "projects/dinov3/SVDT/dinov3-main"
 dinov3_weights_path = os.path.join(os.environ.get('MM_ARCHIVE_CKPT_HOME'), 'dinov3_vitl16_pretrain_sat493m-eadcf0ff.pth')
 
 ignore_index = 255

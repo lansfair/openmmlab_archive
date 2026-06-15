@@ -4,7 +4,7 @@
 
 |序号|数据集|骨干网络|任务指标|维护人| 项目 |
 | -- | -- | -- | -- | -- | -- |
-| 1 | m-cashew-plant  | copernicus  | LP(冻结): mIoU 25.76% </br> LP(非冻结): mIoU 75.20%  | 郑谊峰 | [源码](./projects/copernicus/m-cashew-plant)|
+| 1 | m-cashew-plant  | copernicus  | LP(冻结): mIoU 25.76% </br> LP(非冻结): mIoU 56.35%  | 郑谊峰 | [源码](./projects/copernicus/m-cashew-plant)|
 | 2 | potsdam         | copernicus  | LP(冻结): mIoU 60.72% </br> Upernet(冻结): mIoU 82.38%  | 张浩晨 | [源码](./projects/copernicus/potsdam)|
 | 3 | m-sa-crop-type  | copernicus  | LP(冻结): mIoU 29.00% </br> LP(非冻结): mIoU 35.81%  | 福辉 | [源码](./projects/copernicus/m-sa-crop-type)|
 | 4 | SVDT            | copernicus  | LP(冻结): mIoU 71.69% </br> Upernet(冻结): mIoU 85.98%  | 张浩晨 | [源码](./projects/copernicus/SVDT)|
@@ -14,6 +14,9 @@
 | 8 | SVDT            | dinov3     | LP(冻结): mIoU 80.91% </br> Upernet(冻结): mIoU 86.76%  | 张浩晨 | [源码](./projects/dinov3/SVDT)|
 | 9 | m-cashew-plant  | DOFA2  | Upernet(非冻结): mIoU 64.66%  | 郑谊峰 | [源码](./projects/DOFA2/m-cashew-plant)|
 | 10 | m-cashew-plant  | dinov3  | Upernet(冻结): mIoU 87.78%  | 郑谊峰 | [源码](./projects/dinov3/m-cashew-plant)|
+| 11 | m-cashew-plant  | self-copernicus  | LP(冻结): mIoU 21.10% </br> LP(非冻结): mIoU 32.46%  | 郑谊峰 | [源码](./projects/copernicus/m-cashew-plant)|
+| 12 | m-cashew-plant-b12  | self-copernicus  | LP(冻结): mIoU 21.59% </br> LP(非冻结): mIoU 29.95%  | 郑谊峰 | [源码](./projects/copernicus/m-cashew-plant)|
+| 12 | m-cashew-plant  | self-olmoearth  | LP(非冻结): mIoU 85.70%  | 郑谊峰 | [源码](./projects/olmoearth/m-cashew-plant)|
 
 ## 目录
 

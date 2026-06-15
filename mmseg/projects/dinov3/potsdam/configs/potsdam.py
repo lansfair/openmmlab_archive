@@ -3,14 +3,14 @@ import os
 data_root = os.path.join(os.environ.get('MM_ARCHIVE_DATA_HOME'), 'potsdam')
 dataset_type = 'LocalPotsdamDataset'
 
-ignore_index = 255
+ignore_index = 5
 num_classes = 5
 crop_size = 256
 patch_size = 16
 
 train_pipeline = [
-    dict(type="LoadSinglePNGImageFromFile", to_float32=True),
-    dict(type="LoadLocalPotsdamAnnotations"),
+    dict(type="LoadImageFromFile"),
+    dict(type="LoadAnnotations"),
     dict(
         type="RandomCrop",
         crop_size=(crop_size, crop_size),
@@ -29,8 +29,8 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type="LoadSinglePNGImageFromFile", to_float32=True),
-    dict(type="LoadLocalPotsdamAnnotations"),
+    dict(type="LoadImageFromFile"),
+    dict(type="LoadAnnotations"),
     dict(type="PackSegInputs"),
 ]
 
@@ -42,10 +42,10 @@ train_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir'),
-        ann_file='train.txt',
-        ignore_index=ignore_index,
-        reduce_zero_label=False,
+        data_prefix=dict(
+            img_path="img_dir/train",
+            seg_map_path="ann_dir/train",
+        ),
         pipeline=train_pipeline,
     ),
 )
@@ -58,19 +58,11 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='img_dir', seg_map_path='ann_dir'),
-        ann_file='valid.txt',
-        ignore_index=ignore_index,
-        reduce_zero_label=False,
+        data_prefix=dict(
+            img_path="img_dir/val",
+            seg_map_path="ann_dir/val",
+        ),
         pipeline=test_pipeline,
     ),
 )
 test_dataloader = val_dataloader
-
-val_evaluator = dict(
-    type="OlmoEarthIoUMetric",
-    num_classes=num_classes,
-    ignore_index=ignore_index,
-    use_valid_mask=False,
-)
-test_evaluator = val_evaluator

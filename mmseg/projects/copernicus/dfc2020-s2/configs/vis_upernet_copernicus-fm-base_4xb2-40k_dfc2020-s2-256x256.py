@@ -1,9 +1,8 @@
-_base_ = ['../../../configs/_base_/default_runtime.py']
+_base_ = ['../../../../configs/_base_/default_runtime.py']
 
 custom_imports = dict(
-    imports=['projects.copernicus.copernicus'],
+    imports=['projects.copernicus.dfc2020-s2.copernicus'],
     allow_failed_imports=False)
-
 
 classes = (
     'Forest',
@@ -28,7 +27,7 @@ palette = [
 visualizer = dict(classes=classes, palette=palette)
 
 dataset_type = 'DFC2020S2Dataset'
-data_root = '/mnt/ht2-nas2/EO_test/cyz/Copernicus-FM/mmsegmentation/projects/copernicus/dataset/dfc2020_s1s2/'
+data_root = '/mnt/ht2-nas2/EO_test/openmmlab-archive/dat/dfc2020_s1s2'
 crop_size = (256, 256)
 patch_area = (16 * 10 / 1000)**2
 # copernicus_fm_checkpoint = (
@@ -200,7 +199,7 @@ test_cfg = dict(type='TestLoop')
 
 optim_wrapper = dict(
     type='OptimWrapper',
-    optimizer=dict(type='AdamW', lr=1e-3, weight_decay=0.01),
+    optimizer=dict(type='AdamW', lr=1e-2, weight_decay=0.01),
     clip_grad=dict(max_norm=1.0, norm_type=2),
 )
 # param_scheduler = [
@@ -218,7 +217,7 @@ optim_wrapper = dict(
 param_scheduler = [ 
     dict(
         type='OneCycleLR',
-        eta_max=1e-3,
+        eta_max=1e-2,
         pct_start=0.0,
         anneal_strategy='cos',
         begin=0,
@@ -244,8 +243,9 @@ default_hooks = dict(
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(type='CheckpointHook', by_epoch=True, interval=1),
     sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(
-        type='CopernicusSegVisualizationHook',
-        draw=True,
-        interval=1,
-        rgb_band_indices=(3, 2, 1)))
+    # visualization=dict(
+    #     type='CopernicusSegVisualizationHook',
+    #     draw=True,
+    #     interval=1,
+    #     rgb_band_indices=(3, 2, 1))
+    )

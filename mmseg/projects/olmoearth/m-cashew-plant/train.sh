@@ -15,13 +15,13 @@ export MM_ARCHIVE_CKPT_HOME="$MM_ARCHIVE_HOME/pretrained"
 export CONDA_HOME="$HOME/miniconda3"
 
 # Miniconda3 虚拟环境名称，确保此环境可以正常运行你的项目。
-export CONDA_ENV_NAME='openmm'
+export CONDA_ENV_NAME='openmm-10m'
 
 # 指定训练使用的 GPU 索引，格式：0, 1, 2..., N。
 export CUDA_VISIBLE_DEVICES='0'
                               
 # 训练启动配置名称。
-export CONFIG_NAME='olmoearth-base_1xb4-50e_m-cashew-plant-s2-ft_5e-4'
+export CONFIG_NAME='self-olmoearth-base-10m-8400-ema_1xb4-50e_m-cashew-plant-s2-ft_5e-4'
 
 
 SRCDIR=$PWD
@@ -30,7 +30,7 @@ export PYTHONPATH=".":"$PYTHONPATH"
 PYINTERPRETER="$CONDA_HOME/envs/$CONDA_ENV_NAME/bin/python3"
 
 MM_WORK_HOME="$(echo "$MM_ARCHIVE_HOME" | cut -d '/' -f 1-4)"
-WORK_DIR="$MM_WORK_HOME/openmmlab_work_dirs/mmdet/"$(basename $SRCDIR)""
+WORK_DIR="${MM_WORK_HOME}/openmmlab_work_dirs/mmseg/$(basename "${SRCDIR}")/${CONFIG_NAME}"
 mkdir -p "$WORK_DIR"
 
 $PYINTERPRETER "$PWD/tools/train.py" "$SRCDIR/configs/$CONFIG_NAME.py" --work-dir "$WORK_DIR"

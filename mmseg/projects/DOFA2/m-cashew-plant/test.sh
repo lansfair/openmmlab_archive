@@ -30,7 +30,7 @@ export PYTHONPATH=".":"$PYTHONPATH"
 PYINTERPRETER="$CONDA_HOME/envs/$CONDA_ENV_NAME/bin/python3"
 
 MM_WORK_HOME="$(echo "$MM_ARCHIVE_HOME" | cut -d '/' -f 1-4)"
-WORK_DIR="$MM_WORK_HOME/openmmlab_work_dirs/mmdet/"$(basename $SRCDIR)""
+WORK_DIR="${MM_WORK_HOME}/openmmlab_work_dirs/mmseg/$(basename "${SRCDIR}")/${CONFIG_NAME}"
 mkdir -p "$WORK_DIR"
 
 $PYINTERPRETER "$PWD/tools/test.py" "$SRCDIR/configs/$CONFIG_NAME.py" "checkpoints/$CONFIG_NAME.pth" --work-dir "$WORK_DIR" --show-dir "$WORK_DIR"

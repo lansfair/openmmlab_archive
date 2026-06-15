@@ -46,14 +46,6 @@ model = dict(
         kernel_size=16,
         patch_area=patch_area,
     ),
-    # decode_head=dict(
-    #     type='LPHead',
-    #     in_channels=768,
-    #     channels=768,
-    #     out_channels = 2,
-    #     num_classes=2,
-    #     loss_decode=dict(
-    #         type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     decode_head=dict(
         type="OlmoEarthLinearHead",
         in_channels=768,

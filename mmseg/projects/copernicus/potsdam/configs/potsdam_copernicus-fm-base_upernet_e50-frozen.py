@@ -1,4 +1,5 @@
 import os
+
 _base_ = [
     '../../../../configs/_base_/default_runtime.py',
     './potsdam.py'
@@ -8,25 +9,24 @@ custom_imports = dict(
     imports=['projects.copernicus.potsdam.copernicus'],
     allow_failed_imports=False)
 
+copernicus_fm_checkpoint = os.path.join(os.environ.get('MM_ARCHIVE_CKPT_HOME'), "CopernicusFM_ViT_base_varlang_e100.pth")
+
 crop_size = (256, 256)
 patch_area = (16 * 10 / 1000)**2
 num_classes = 5
-
-copernicus_fm_checkpoint = os.path.join(os.environ.get('MM_ARCHIVE_CKPT_HOME'), "CopernicusFM_ViT_base_varlang_e100.pth")
-s2_band_wavelengths = [
-    665, 560, 490,
-]
+ignore_index = 5
+s2_band_wavelengths = [665, 560, 490,]
 s2_band_bandwidths = [30, 35, 65]
 
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     size=crop_size,
     bgr_to_rgb=False,
     pad_val=0,
-    seg_pad_val=255,
+    seg_pad_val=ignore_index,
 )
-
 
 model = dict(
     type='CopernicusEncoderDecoder',
@@ -56,6 +56,7 @@ model = dict(
         channels=512,
         dropout_ratio=0.1,
         num_classes=num_classes,
+        ignore_index=ignore_index,    # 添加这一行
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
@@ -71,6 +72,7 @@ model = dict(
         concat_input=False,
         dropout_ratio=0.1,
         num_classes=num_classes,
+        ignore_index=ignore_index,    # 添加这一行
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
@@ -81,7 +83,7 @@ model = dict(
     test_cfg=dict(mode='whole'),
 )
 
-val_evaluator = dict(type='IoUMetric', iou_metrics=["mIoU", "mFscore"])
+val_evaluator = dict(type='IoUMetric', iou_metrics=["mIoU", "mFscore"], ignore_index=ignore_index)
 test_evaluator = val_evaluator
 
 train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=50, val_interval=1)

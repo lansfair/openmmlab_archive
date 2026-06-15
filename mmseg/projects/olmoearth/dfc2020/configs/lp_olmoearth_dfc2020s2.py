@@ -1,30 +1,25 @@
-_base_ = [
-    '../../../../configs/_base_/default_runtime.py',
-]
-
 custom_imports = dict(
-    imports=[
-        "projects.dinov3.DFC2020s2.dinov3",
-    ],
+    imports=["projects.olmoearth.dfc2020.olmoearth"],
     allow_failed_imports=False,
 )
 
-data_root = '/mnt/ht2-nas2/EO_test/cyz/Copernicus-FM/copernicus/dataset/dfc2020_s1s2'
-
-dinov3_repo_dir = "projects/dinov3/LoveDA/dinov3-main"
-dinov3_weights_path =  "/mnt/ht2-nas2/EO_test/openmmlab-archive/src/v1/mmseg/pretrained/dinov3_vitl16_pretrain_sat493m-eadcf0ff.pth"
-work_dir = "./work_dirs/dinov3-vitl16_4xb16_dfc2020_uper"
+data_root = '/mnt/ht2-nas2/EO_test/openmmlab-archive/dat/dfc2020_s1s2'
+olmoearth_model_dir = "/mnt/ht2-nas2/EO_test/wyf/Zhejiang_Earth_weights/olmoearth/step8400"
+model_config_path = f"{olmoearth_model_dir}/config.json"
+weights_path = f"{olmoearth_model_dir}/weights.pth"
+work_dir = "./work_dirs/olmoearth-base_4xb8-50e_dfc2020-s2-linear"
 
 ignore_index = 255
 num_classes = 8
-crop_size = 256
+num_timesteps = 1
+crop_size = (256, 256)
 patch_size = 8
-hidden_dim = 1024
-
+hidden_dim = 768
 norm_cfg = dict(type="SyncBN", requires_grad=True)
 
+
 train_pipeline = [
-    dict(type="LoadSingleRSImageFromFile"),
+    dict(type="LoadOlmoEarthDFC2020S2Image"),
     dict(type="LoadDFC2020Annotations"),
     dict(type="Resize", scale=crop_size, keep_ratio=False),
     dict(
@@ -35,20 +30,29 @@ train_pipeline = [
         seg_pad_val=ignore_index,
     ),
     dict(type="RandomFlip", prob=0.5, direction="horizontal"),
-    dict(type="RandomFlip", prob=0.5, direction="vertical"), 
-    dict(type="PackDinoSegInputs"),
+    dict(type="RandomFlip", prob=0.5, direction="vertical"),
+    dict(
+        type="OlmoEarthNormalize",
+        modality="sentinel2_l2a",
+        num_timesteps=num_timesteps,
+    ),
+    dict(type="PackOlmoEarthSegInputs"),
 ]
 
-
 test_pipeline = [
-    dict(type="LoadSingleRSImageFromFile"),
+    dict(type="LoadOlmoEarthDFC2020S2Image"),
     dict(type="LoadDFC2020Annotations"),
-    dict(type="PackDinoSegInputs"),
+    dict(
+        type="OlmoEarthNormalize",
+        modality="sentinel2_l2a",
+        num_timesteps=num_timesteps,
+    ),
+    dict(type="PackOlmoEarthSegInputs"),
 ]
 
 train_dataloader = dict(
-    batch_size=16,
-    num_workers=4,
+    batch_size=8,
+    num_workers=2,
     persistent_workers=True,
     pin_memory=True,
     prefetch_factor=4,
@@ -63,8 +67,8 @@ train_dataloader = dict(
 )
 
 val_dataloader = dict(
-    batch_size=16,
-    num_workers=4,
+    batch_size=8,
+    num_workers=2,
     persistent_workers=True,
     pin_memory=True,
     prefetch_factor=4,
@@ -105,77 +109,54 @@ val_evaluator = dict(
 )
 test_evaluator = val_evaluator
 
-
 data_preprocessor = dict(
-    type="SegDataPreProcessor",
-    mean=[1117.2, 1041.8, 946.5],
-    std=[736.0, 684.8, 620.0],
-    bgr_to_rgb=True,
+    type="OlmoEarthSegDataPreProcessor",
+    mean=None,
+    std=None,
+    bgr_to_rgb=False,
     pad_val=0,
     seg_pad_val=ignore_index,
-    size_divisor=patch_size,
+    size=crop_size,
     test_cfg=dict(size_divisor=patch_size),
 )
 
 model = dict(
-    type="EncoderDecoder",
+    type="OlmoEarthEncoderDecoder",
     data_preprocessor=data_preprocessor,
     backbone=dict(
-        type="DINOv3ViTBackbone",
-        repo_dir=dinov3_repo_dir,
-        model_name="dinov3_vitl16",
-        weights_path=dinov3_weights_path,
+        type="OlmoEarthBackbone",
+        model_config_path=model_config_path,
+        init_cfg=dict(type="Pretrained", checkpoint=weights_path),
+        modality="sentinel2_l2a",
         patch_size=patch_size,
+        num_timesteps=num_timesteps,
         out_channels=hidden_dim,
-        freeze=True,
-    ),
-    neck=dict(
-        type="MultiLevelNeck",
-        in_channels=[hidden_dim],
-        out_channels=hidden_dim,
-        scales=[4, 2, 1, 0.5],
-        norm_cfg=norm_cfg,
+        pooling_type="mean",
+        fast_pass=True,
     ),
     decode_head=dict(
-        type="UPerHead",
-        in_channels=[hidden_dim, hidden_dim, hidden_dim, hidden_dim],
-        in_index=[0, 1, 2, 3],
-        pool_scales=(1, 2, 3, 6),
-        channels=512,
-        dropout_ratio=0.1,
+        type="OlmoEarthPatchLinearHead",
+        in_channels=hidden_dim,
+        channels=hidden_dim,
+        in_index=0,
         num_classes=num_classes,
+        patch_size=patch_size,
         ignore_index=ignore_index,
-        norm_cfg=norm_cfg,
-        align_corners=False,
+        use_valid_mask=False,
+        valid_mask_loss=False,
+        align_corners=True,
         loss_decode=dict(
             type="CrossEntropyLoss",
             use_sigmoid=False,
             loss_weight=1.0,
         ),
     ),
-    auxiliary_head=dict(
-        type="FCNHead",
-        in_channels=hidden_dim,
-        in_index=2,
-        channels=256,
-        num_convs=1,
-        concat_input=False,
-        dropout_ratio=0.1,
-        num_classes=num_classes,
-        ignore_index=ignore_index,
-        norm_cfg=norm_cfg,
-        align_corners=False,
-        loss_decode=dict(
-            type="CrossEntropyLoss",
-            use_sigmoid=False,
-            loss_weight=0.4,
-        ),
-    ),
+    auxiliary_head=None,
     train_cfg=dict(),
     test_cfg=dict(mode="whole"),
-
 )
 
+custom_hooks = [dict(type="FreezeBackboneUntilEpochHook", unfreeze_epoch=None)]
 optim_wrapper = dict(
     type="OptimWrapper",
     optimizer=dict(type="AdamW", lr=0.01, weight_decay=0.01),
@@ -195,6 +176,7 @@ param_scheduler = [
     )
 ]
 
+
 train_cfg = dict(type="EpochBasedTrainLoop", max_epochs=50, val_interval=5)
 val_cfg = dict(type="ValLoop")
 test_cfg = dict(type="TestLoop")
@@ -212,7 +194,7 @@ default_hooks = dict(
         max_keep_ckpts=3,
     ),
     sampler_seed=dict(type="DistSamplerSeedHook"),
-    # visualization=dict(type="OlmoEarthVisualizationHook"),
+    visualization=dict(type="OlmoEarthVisualizationHook",show=True),
 )
 
 env_cfg = dict(
@@ -225,4 +207,11 @@ default_scope = "mmseg"
 log_level = "INFO"
 load_from = None
 resume = False
-auto_scale_lr = dict(enable=False, base_batch_size=16)
+auto_scale_lr = dict(enable=False, base_batch_size=64)
+
+vis_backends = [dict(type='LocalVisBackend')]
+visualizer = dict(
+    type='SegLocalVisualizer',
+    vis_backends=vis_backends,
+    name='visualizer',
+)

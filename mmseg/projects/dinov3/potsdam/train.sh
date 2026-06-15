@@ -21,7 +21,7 @@ export CONDA_ENV_NAME='mmdinov3-cd'
 export CUDA_VISIBLE_DEVICES='5'
                               
 # 训练启动配置名称。
-export CONFIG_NAME='dinov3-vitl16_upernet_b16-p8-150e_cashew-plant_rgb'
+export CONFIG_NAME='potsdam_dinov3-fm-base_lp_e50-frozen'
 
 
 SRCDIR=$PWD
